@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_api/secendmethod/provider_state.dart';
 
 class MyScreen extends ConsumerWidget {
-  const MyScreen({Key? key}) : super(key: key);
+  const MyScreen({super.key});
 
   @override
   Widget build(BuildContext context, ref) {
@@ -12,17 +12,31 @@ class MyScreen extends ConsumerWidget {
     return Scaffold(
       body: SafeArea(
         child: state is LoadproductState
-            ? Center(
+            ? const Center(
                 child: CircularProgressIndicator(),
               )
-            : Column(
-                children: [
-                  if (state is LoadedproductState) ...[
-                    for (int i = 0; i < state.product.length; i++) ...[
-                      Text(state.product[i].title.toString())
-                    ]
-                  ]
-                ],
+            : SingleChildScrollView(
+                child: Column(
+                  children: [
+                    if (state is LoadedproductState) ...[
+                      for (int i = 0; i < state.product.length; i++) ...[
+                        ListTile(
+                          title: Text(state.product[i].title.toString()),
+                          leading: Text(state.product[i].id.toString()),
+                          trailing: InkWell(
+                            onTap: () {
+                              ref.read(productProvider.notifier).changeColor(state.product[i].id!);
+                            },
+                            child: Icon(
+                              Icons.heart_broken_rounded,
+                              color: state.product[i].isFav ? Colors.red : Colors.yellow,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ],
+                  ],
+                ),
               ),
       ),
     );

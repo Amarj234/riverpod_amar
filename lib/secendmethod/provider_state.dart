@@ -1,9 +1,10 @@
 import 'dart:developer';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_api/features/products/data/model/product_model.dart';
+import 'package:riverpod_api/model/product_model.dart';
 
-import 'api_call.dart';
+import 'package:riverpod_api/secendmethod/api_call.dart';
 
 final productProvider = StateNotifierProvider<ProductNotifire, Myproduct>(
   (ref) => ProductNotifire(),
@@ -31,7 +32,9 @@ class ProductNotifire extends StateNotifier<Myproduct> {
   }
 
   Future fetchProductsApiRequest() async {
-    print("pageload");
+    if (kDebugMode) {
+      print("pageload");
+    }
     try {
       state = LoadproductState();
       final res = await ApiCall().getApi();
@@ -53,5 +56,13 @@ class ProductNotifire extends StateNotifier<Myproduct> {
     }
   }
 
-  changeColor() {}
+  changeColor(num id) {
+    Myproduct pro = state;
+    if (pro is LoadedproductState) {
+      int index = pro.product.indexWhere((item) => item.id == id);
+      pro.product[index].isFav = !pro.product[index].isFav;
+      state = LoadedproductState(product: pro.product);
+    }
+    print(id);
+  }
 }
