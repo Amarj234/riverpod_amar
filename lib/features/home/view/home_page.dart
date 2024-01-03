@@ -36,7 +36,8 @@ class HomePage extends StatelessWidget {
             HomeButton(
               title: 'test'.tr(),
               onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyScreen()));
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => const MyScreen()));
               },
             ),
           ],

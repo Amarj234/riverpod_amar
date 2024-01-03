@@ -10,6 +10,9 @@ class MyScreen extends ConsumerWidget {
     Myproduct state = ref.watch(productProvider);
 
     return Scaffold(
+      appBar: AppBar(
+        title: state is LoadedproductState ? Text(state.title.toString()) : const Text('amarjeet'),
+      ),
       body: SafeArea(
         child: state is LoadproductState
             ? const Center(

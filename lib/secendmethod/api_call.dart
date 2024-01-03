@@ -1,16 +1,22 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 
-import '../core/network/constant/endpoints.dart';
+import 'package:riverpod_api/core/network/constant/endpoints.dart';
 
 class ApiCall {
   final dio = Dio();
   Future<Response?> getApi() async {
     try {
       final response = await dio.get(Endpoints.product);
-      print(response);
+      if (kDebugMode) {
+        print(response);
+      }
       return response;
     } catch (e) {
-      print("e");
+      if (kDebugMode) {
+        print('e');
+      }
     }
+    return null;
   }
 }

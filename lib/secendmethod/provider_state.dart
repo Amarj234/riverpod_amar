@@ -1,9 +1,6 @@
 import 'dart:developer';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_api/model/product_model.dart';
-
 import 'package:riverpod_api/secendmethod/api_call.dart';
 
 final productProvider = StateNotifierProvider<ProductNotifire, Myproduct>(
@@ -17,8 +14,9 @@ class InitialproductState extends Myproduct {}
 class LoadproductState extends Myproduct {}
 
 class LoadedproductState extends Myproduct {
-  LoadedproductState({required this.product});
-  final List<ProductModel> product;
+  LoadedproductState({required this.product, this.title = 'frist'});
+  List<ProductModel> product;
+  String? title;
 }
 
 class ErrorproductState extends Myproduct {
@@ -32,13 +30,10 @@ class ProductNotifire extends StateNotifier<Myproduct> {
   }
 
   Future fetchProductsApiRequest() async {
-    if (kDebugMode) {
-      print("pageload");
-    }
     try {
       state = LoadproductState();
       final res = await ApiCall().getApi();
-      log("pageload2 $res");
+      log('pageload2 $res');
       List data = res?.data;
       List<ProductModel> product = [];
 
@@ -51,7 +46,7 @@ class ProductNotifire extends StateNotifier<Myproduct> {
 
       // state=
     } catch (e) {
-      state = ErrorproductState(err: "$e");
+      state = ErrorproductState(err: '$e');
       rethrow;
     }
   }
@@ -61,8 +56,7 @@ class ProductNotifire extends StateNotifier<Myproduct> {
     if (pro is LoadedproductState) {
       int index = pro.product.indexWhere((item) => item.id == id);
       pro.product[index].isFav = !pro.product[index].isFav;
-      state = LoadedproductState(product: pro.product);
+      state = LoadedproductState(product: pro.product, title: pro.product[index].title);
     }
-    print(id);
   }
 }
