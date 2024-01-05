@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_api/model/product_model.dart';
 import 'package:riverpod_api/secendmethod/api_call.dart';
@@ -6,6 +5,8 @@ import 'package:riverpod_api/secendmethod/api_call.dart';
 final productProvider = StateNotifierProvider<ProductNotifire, Myproduct>(
   (ref) => ProductNotifire(),
 );
+
+final tring = StateProvider<String>((ref) => "amar");
 
 abstract class Myproduct {}
 
@@ -33,22 +34,21 @@ class ProductNotifire extends StateNotifier<Myproduct> {
     try {
       state = LoadproductState();
       final res = await ApiCall().getApi();
-      log('pageload2 $res');
       List data = res?.data;
       List<ProductModel> product = [];
-
       for (var dat in data) {
         ProductModel dataa = ProductModel.fromJson(dat);
         product.add(dataa);
       }
-
       state = LoadedproductState(product: product);
-
-      // state=
     } catch (e) {
       state = ErrorproductState(err: '$e');
       rethrow;
     }
+  }
+
+  changeAppbar(WidgetRef ref, String title) {
+    ref.read(tring.notifier).state = title;
   }
 
   changeColor(num id) {

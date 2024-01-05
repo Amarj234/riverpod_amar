@@ -8,10 +8,11 @@ class MyScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     Myproduct state = ref.watch(productProvider);
+    String statn = ref.watch(tring);
 
     return Scaffold(
       appBar: AppBar(
-        title: state is LoadedproductState ? Text(state.title.toString()) : const Text('amarjeet'),
+        title: Text('$statn '),
       ),
       body: SafeArea(
         child: state is LoadproductState
@@ -24,6 +25,11 @@ class MyScreen extends ConsumerWidget {
                     if (state is LoadedproductState) ...[
                       for (int i = 0; i < state.product.length; i++) ...[
                         ListTile(
+                          onTap: () {
+                            ref
+                                .read(productProvider.notifier)
+                                .changeAppbar(ref, state.product[i].title!);
+                          },
                           title: Text(state.product[i].title.toString()),
                           leading: Text(state.product[i].id.toString()),
                           trailing: InkWell(

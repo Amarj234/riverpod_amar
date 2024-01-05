@@ -13,8 +13,7 @@ final productRepositoryProvider = Provider<ProductRepository>((ref) {
   return ProductRepository(ref.read(productApiProvider));
 });
 
-final productProvider =
-    StateNotifierProvider<ProductsNotifier, List<ProductModel>>((ref) {
+final productProvider = StateNotifierProvider<ProductsNotifier, List<ProductModel>>((ref) {
   return ProductsNotifier(ref: ref);
 });
 
